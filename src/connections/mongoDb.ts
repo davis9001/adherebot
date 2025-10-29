@@ -8,6 +8,7 @@ import VoiceChannelEvent, {
 } from "../models/voiceChannelEvent"
 import { GuildMember, VoiceBasedChannel } from "discord.js"
 import { GuildInviteData, InviteData } from "../models/inviteData"
+import IntroChannelSetting from "../models/introChannelSetting"
 
 const mongoUser = process.env.MONGO_USER
 const mongoPass = process.env.MONGO_PASS
@@ -190,6 +191,83 @@ export const getLogChannelSetting = async (
   const result = await database
     .collection<LogChannelSetting>("logChannelSetting")
     .findOne({ guildId: guildId, logType: logType })
+  return result
+}
+
+export const setIntroChannel = async (guildId: string, channelId: string) => {
+  const database = mongoClient.db(mongoDb)
+  const introChannelSettings = database.collection<IntroChannelSetting>(
+    "introChannelSettings"
+  )
+  const result = await introChannelSettings.updateOne(
+    { guildId: guildId },
+    { $set: { introChannelId: channelId } },
+    { upsert: true }
+  )
+  return result
+}
+
+export const getIntroChannel = async (guildId: string) => {
+  const database = mongoClient.db(mongoDb)
+  const result = await database
+    .collection<IntroChannelSetting>("introChannelSettings")
+    .findOne({ guildId: guildId })
+  return result?.introChannelId
+}
+
+export const setAdminMessagesChannel = async (
+  guildId: string,
+  channelId: string
+) => {
+  const database = mongoClient.db(mongoDb)
+  const introChannelSettings = database.collection<IntroChannelSetting>(
+    "introChannelSettings"
+  )
+  const result = await introChannelSettings.updateOne(
+    { guildId: guildId },
+    { $set: { adminMessagesChannelId: channelId } },
+    { upsert: true }
+  )
+  return result
+}
+
+export const getAdminMessagesChannel = async (guildId: string) => {
+  const database = mongoClient.db(mongoDb)
+  const result = await database
+    .collection<IntroChannelSetting>("introChannelSettings")
+    .findOne({ guildId: guildId })
+  return result?.adminMessagesChannelId
+}
+
+export const setIntroAutoDelete = async (
+  guildId: string,
+  enabled: boolean
+) => {
+  const database = mongoClient.db(mongoDb)
+  const introChannelSettings = database.collection<IntroChannelSetting>(
+    "introChannelSettings"
+  )
+  const result = await introChannelSettings.updateOne(
+    { guildId: guildId },
+    { $set: { autoDeleteEnabled: enabled } },
+    { upsert: true }
+  )
+  return result
+}
+
+export const getIntroAutoDelete = async (guildId: string) => {
+  const database = mongoClient.db(mongoDb)
+  const result = await database
+    .collection<IntroChannelSetting>("introChannelSettings")
+    .findOne({ guildId: guildId })
+  return result?.autoDeleteEnabled || false
+}
+
+export const getIntroSettings = async (guildId: string) => {
+  const database = mongoClient.db(mongoDb)
+  const result = await database
+    .collection<IntroChannelSetting>("introChannelSettings")
+    .findOne({ guildId: guildId })
   return result
 }
 
