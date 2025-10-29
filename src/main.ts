@@ -6,6 +6,7 @@ import { guildMemberAddEvent, updateInvitesData } from "./events/guildJoin"
 import { guildMemberRemoveEvent } from "./events/guildMemberRemove"
 import { readyEvent } from "./events/ready"
 import { voiceStateEvent } from "./events/voiceState"
+import log from "./lib/logger"
 
 import { botScheduler } from "./bot-dispatcher"
 import { activeCommands } from "./commands/activeCommands"
@@ -59,8 +60,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
           })
         }
       } catch (err) {
+        log(`Error deleting intro message: ${err}`)
         await interaction.update({
-          content: `❌ Error deleting message: ${err}`,
+          content: `❌ Error deleting message. Please try again or delete it manually.`,
           components: [],
         })
       }

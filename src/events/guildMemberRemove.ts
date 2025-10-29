@@ -65,15 +65,16 @@ export async function guildMemberRemoveEvent(member: GuildMember | PartialGuildM
 
     // Send confirmation message to admin for each message
     const messagesArray = Array.from(memberMessages.values())
-    for (let i = 0; i < messagesArray.length; i++) {
-      await sendAdminConfirmation(
+    const confirmationPromises = messagesArray.map((message) =>
+      sendAdminConfirmation(
         guild.name,
         adminChannel,
-        messagesArray[i],
+        message,
         member,
         introChannel
       )
-    }
+    )
+    await Promise.allSettled(confirmationPromises)
   } catch (err) {
     log(`[${guild.name}] Error fetching messages: ${err}`)
   }
