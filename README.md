@@ -1,3 +1,13 @@
+# adherebot
+
+> **Archived — this bot is no longer developed here.**
+>
+> The work continues in **[starspacegroup/spacebot](https://github.com/starspacegroup/spacebot)**,
+> an open-source Discord bot hosted on Cloudflare and Google Cloud. Start
+> there. This repository stays up, read-only, for reference.
+
+---
+
 ## Requirements:
 
 - MongoDB
